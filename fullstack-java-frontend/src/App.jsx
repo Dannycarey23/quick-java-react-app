@@ -1,6 +1,6 @@
+import Student from './components/Student';
+import ButtonAppBar from './components/AppBar'
 
-import ButtonAppBar from './components/ButtonAppBar'
-import './App.css'
 
 function App() {
   
@@ -8,6 +8,7 @@ function App() {
     
     <div className="App">
       <ButtonAppBar />
+      <Student />
     </div>
     
   )
