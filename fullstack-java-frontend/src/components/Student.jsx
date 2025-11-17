@@ -3,11 +3,25 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 
 export default function Student() {
   const paperStyle = { padding: '50px 20px', width: 600, margin: '20px auto', textAlign: 'center' };
   const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
+  const [address, setAddress] = useState('');
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    const student = { name, address };
+    console.log(student);
+  fetch("http://localhost:8081/student/add", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(student)
+  }).then(() => {
+    console.log("New Student added");
+  })
+  }
 
   return (
     <Container>
@@ -34,13 +48,14 @@ export default function Student() {
             onChange={(e)=>setName(e.target.value)}
           />
           <TextField
-            id="student-location"
-            label="Student Location"
+            id="student-address"
+            label="Student Address"
             variant="outlined"
             fullWidth
-            value={location}
-            onChange={(e)=>setLocation(e.target.value)}
+            value={address}
+            onChange={(e)=>setAddress(e.target.value)}
           />
+          <Button variant="contained" style={{ width: '25%' }} color="primary" onClick={handleClick}>Contained</Button>
         </Box>
       </Paper>    
     </Container>
