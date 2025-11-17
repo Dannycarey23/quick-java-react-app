@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
@@ -9,6 +9,7 @@ export default function Student() {
   const paperStyle = { padding: '50px 20px', width: 600, margin: '20px auto', textAlign: 'center' };
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
+  const [students, setStudents] = useState([]);
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -22,6 +23,14 @@ export default function Student() {
     console.log("New Student added");
   })
   }
+
+  useEffect(() => {
+    fetch("http://localhost:8081/student/getAll")
+      .then(res => res.json())
+      .then((result) => {
+        setStudents(result);
+      })
+  }, []);
 
   return (
     <Container>
@@ -55,9 +64,24 @@ export default function Student() {
             value={address}
             onChange={(e)=>setAddress(e.target.value)}
           />
-          <Button variant="contained" style={{ width: '25%' }} color="primary" onClick={handleClick}>Contained</Button>
+          <Button variant="contained" style={{ width: '25%' }} color="primary" onClick={handleClick}>Submit</Button>
         </Box>
-      </Paper>    
+      </Paper> 
+
+      <Paper elevation={3} style={paperStyle} >
+        <h1 style={{ color: 'blue' }}>
+          <u>Students</u>
+        </h1>
+        <Box>
+          {students.map(student => (
+            <Paper elevation={6} style={{ margin: "10px", padding: "15px", textAlign: "left" }} key={student.id}>
+              Id: {student.id}<br />
+              Name: {student.name}<br />
+              Address: {student.address}
+            </Paper>
+          ))}
+        </Box>
+      </Paper>
     </Container>
   );
 }
